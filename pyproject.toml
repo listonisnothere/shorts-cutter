@@ -1,0 +1,45 @@
+[project]
+name = "shorts-cutter"
+version = "0.1.0"
+description = "Content Factory — long video → 15–30 s vertical shorts with burned-in subtitles"
+requires-python = ">=3.12"
+dependencies = [
+    "openai>=3.37",
+    "httpx>=0.27",
+    "pydantic>=2.9",
+    "pydantic-settings>=2.6",
+    "typer>=0.13",
+    "imageio-ffmpeg>=0.6",
+]
+
+[project.scripts]
+shorts-cutter = "shorts_cutter.cli:app"
+
+[build-system]
+requires = ["uv_build>=0.11.2,<0.12"]
+build-backend = "uv_build"
+
+[dependency-groups]
+dev = [
+    "pytest>=8.3",
+    "ruff>=0.8",
+]
+
+[tool.ruff]
+line-length = 110
+target-version = "py312"
+
+[tool.ruff.lint]
+select = ["E", "F", "W", "I", "B", "UP", "SIM", "C4", "RUF"]
+ignore = [
+    "RUF001",  # Cyrillic strings are intentional (videos and docs are Russian)
+    "RUF002",
+    "RUF003",
+]
+
+[tool.ruff.lint.isort]
+known-first-party = ["shorts_cutter", "tests"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+addopts = "-ra --strict-markers --import-mode=importlib"
